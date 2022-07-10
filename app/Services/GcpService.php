@@ -16,7 +16,7 @@ class GcpService
         $FileService = new FileService;
         $payloads = [
             [
-                'name' => 'pdf',
+                'name' => $this->getFileType($file->extension),
                 'contents' => Storage::disk('local')->get($FileService->path($file->filename)),
                 'filename' => basename($file->filename),
             ]
@@ -60,5 +60,38 @@ class GcpService
                 'message' => $th->getMessage(),
             ];
         }    
+    }
+
+    public function getFileType($extension)
+    {
+        if ($extension != 'pdf') {
+            return 'image';
+        }
+        return 'pdf';
+    }
+
+    public function handleCallback($gcp_code,$contents = [])
+    {
+        $FileService = new FileService;
+        $file = $FileService->findByGcpCode($gcp_code);
+        $payloads = [
+            'payload_content' => $contents,
+            'content' => $this->mergeContent($contents)
+        ];
+        $file = $FileService->update($file->id,$payloads);
+        return [
+            'success' => true,
+            'data' => null,
+            'message' => 'Payload berhasil di handle'
+        ];
+    }
+
+    public function mergeContent($contents)
+    {
+        $merge_contents = '';
+        foreach ($contents as $content) {
+            $merge_contents .= ' '.$content['text'];
+        }
+        return $merge_contents;
     }
 }

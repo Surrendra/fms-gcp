@@ -5,7 +5,6 @@ use App\Services\GcpService;
 
 Route::get('/process_file_ocr', function () {
     $GcpService = new GcpService;
-    $file = File::query()->first();
+    $file = File::query()->find(2);
     $res =  $GcpService->postOcrPdf($file);
-    dd($res);
 });

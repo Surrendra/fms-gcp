@@ -12,5 +12,6 @@ class File extends Model
     protected $guarded = ['id','created_at','updated_at'];
     protected $casts = [
         'ocr_response' => 'array',
+        'payload_content' => 'array'
     ];
 }

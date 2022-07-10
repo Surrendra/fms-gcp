@@ -14,11 +14,14 @@ use App\Http\Controllers\api\FileController;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::middleware(['api'])->group(function () {
+    Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+        return $request->user();
+    });
+    Route::prefix('file')->group(function () {
+        Route::post('create', [FileController::class, 'create']);
+    });
 });
 
-Route::prefix('file')->group(function () {
-    Route::post('create', [FileController::class, 'create']);
-});
+Route::put('gcp-handle-callback', [FileController::class, 'gcpHandleCallback']);
+

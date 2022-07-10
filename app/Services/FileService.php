@@ -26,4 +26,9 @@ class FileService extends Service
         $file->update($data);
         return $file;
     }
+
+    public function findByGcpCode($gcp_code)
+    {
+        return File::query()->where('gcp_code', $gcp_code)->first();
+    }
 }
