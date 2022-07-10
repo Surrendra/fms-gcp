@@ -21,11 +21,15 @@ class GcpService
                 'filename' => basename($file->filename),
             ]
         ];
+        $webhook_url = 'https://webhook.site/678f497a-6cfa-4afa-b389-d9b81f496be1';
+        if (Config::get('app.env') == 'production') {
+            $webhook_url = route('gcp.handle_callback');
+        }
         try {
             $headers = [
                 'Accept' => 'application/json',
                 'Authorization' => 'Bearer ' . Config::get('gcp.token'),
-                'webhook_url' => 'https://webhook.site/678f497a-6cfa-4afa-b389-d9b81f496be1'
+                'webhook_url' => $webhook_url
             ];
             $res = $client->request('POST', 'https://picaso.id/api/order/v1.2/ocr', [
                 'headers' => $headers,

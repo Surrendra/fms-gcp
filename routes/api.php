@@ -23,5 +23,5 @@ Route::middleware(['api'])->group(function () {
     });
 });
 
-Route::put('gcp-handle-callback', [FileController::class, 'gcpHandleCallback']);
+Route::put('gcp-handle-callback', [FileController::class, 'gcpHandleCallback'])->name('gcp.handle_callback');
 
